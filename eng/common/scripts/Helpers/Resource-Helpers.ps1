@@ -342,6 +342,9 @@ function RemoveStorageAccount($Account) {
   }
 
   foreach ($container in $containers) {
+    if (!($container | Get-Member 'BlobContainerProperties')) {
+      continue
+    }
     if ($container.BlobContainerProperties.HasImmutableStorageWithVersioning) {
       try {
         # Use AzRm cmdlet as deletion will only work through ARM with the immutability policies defined on the blobs
